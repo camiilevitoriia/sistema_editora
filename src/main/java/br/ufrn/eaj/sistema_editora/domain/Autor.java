@@ -4,11 +4,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "tb_autor")
+@Audited
 @Data
 @NoArgsConstructor
+
 public class Autor {
 
     @Id

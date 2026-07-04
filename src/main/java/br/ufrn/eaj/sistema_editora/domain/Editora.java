@@ -3,6 +3,7 @@ package br.ufrn.eaj.sistema_editora.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Table(name = "tb_editora")
 @Data
 @NoArgsConstructor
+@Audited
 public class Editora {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
