@@ -50,4 +50,9 @@ public class LivroController {
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{livroId}/autores/{autorId}")
+    public ResponseEntity<LivroResponseDTO> associarAutor(@PathVariable Long livroId, @PathVariable Long autorId) {
+        return ResponseEntity.ok(service.associarAutor(livroId, autorId));
+    }
 }

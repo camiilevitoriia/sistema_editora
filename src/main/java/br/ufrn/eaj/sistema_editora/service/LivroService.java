@@ -1,11 +1,14 @@
 package br.ufrn.eaj.sistema_editora.service;
 
+import br.ufrn.eaj.sistema_editora.domain.Autor;
 import br.ufrn.eaj.sistema_editora.domain.Editora;
 import br.ufrn.eaj.sistema_editora.domain.Livro;
 import br.ufrn.eaj.sistema_editora.domain.ResumoLivro;
 import br.ufrn.eaj.sistema_editora.dto.LivroRequestDTO;
 import br.ufrn.eaj.sistema_editora.dto.LivroResponseDTO;
 import br.ufrn.eaj.sistema_editora.errorhandling.RecursoNaoEncontradoException;
+import br.ufrn.eaj.sistema_editora.errorhandling.RegraNegocioException;
+import br.ufrn.eaj.sistema_editora.repository.AutorRepository;
 import br.ufrn.eaj.sistema_editora.repository.EditoraRepository;
 import br.ufrn.eaj.sistema_editora.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,9 @@ public class LivroService {
 
     @Autowired
     private EditoraRepository editoraRepository;
+
+    @Autowired
+    private AutorRepository autorRepository;
 
     @Transactional(readOnly = true)
     public Page<LivroResponseDTO> buscarTodos(Pageable pageable) {
@@ -65,6 +71,25 @@ public class LivroService {
     public void excluir(Long id) {
         Livro livro = buscarEntidadePorId(id);
         repository.delete(livro);
+    }
+
+    @Transactional
+    public LivroResponseDTO associarAutor(Long livroId, Long autorId) {
+        Livro livro = buscarEntidadePorId(livroId);
+        Autor autor = autorRepository.findById(autorId)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Autor nao encontrado"));
+
+        boolean autorJaAssociado = livro.getAutores()
+                .stream()
+                .anyMatch(autorAssociado -> autorAssociado.getId().equals(autorId));
+
+        if (autorJaAssociado) {
+            throw new RegraNegocioException("Autor ja associado ao livro");
+        }
+
+        livro.getAutores().add(autor);
+
+        return LivroResponseDTO.fromEntity(repository.save(livro));
     }
 
     private Livro buscarEntidadePorId(Long id) {
