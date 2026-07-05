@@ -1,6 +1,8 @@
 package br.ufrn.eaj.sistema_editora.service;
 
 import br.ufrn.eaj.sistema_editora.domain.Autor;
+import br.ufrn.eaj.sistema_editora.dto.AutorRequestDTO;
+import br.ufrn.eaj.sistema_editora.dto.AutorResponseDTO;
 import br.ufrn.eaj.sistema_editora.repository.AutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,18 @@ public class AutorService {
     private AutorRepository repository;
 
     @Transactional(readOnly = true)
-    public List<Autor> buscarTodos() { return repository.findAll(); }
+    public List<AutorResponseDTO> buscarTodos() {
+        return repository.findAll().stream()
+                .map(AutorResponseDTO::fromEntity)
+                .toList();
+    }
 
     @Transactional
-    public Autor salvar(Autor autor) { return repository.save(autor); }
+    public AutorResponseDTO salvar(AutorRequestDTO dto) {
+        Autor autor = new Autor();
+        autor.setNome(dto.nome());
+        autor.setNacionalidade(dto.nacionalidade());
+
+        return AutorResponseDTO.fromEntity(repository.save(autor));
+    }
 }

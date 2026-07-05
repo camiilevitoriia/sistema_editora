@@ -1,7 +1,9 @@
 package br.ufrn.eaj.sistema_editora.controller;
 
-import br.ufrn.eaj.sistema_editora.domain.Autor;
+import br.ufrn.eaj.sistema_editora.dto.AutorRequestDTO;
+import br.ufrn.eaj.sistema_editora.dto.AutorResponseDTO;
 import br.ufrn.eaj.sistema_editora.service.AutorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,9 @@ public class AutorController {
     private AutorService service;
 
     @GetMapping
-    public List<Autor> listar() { return service.buscarTodos(); }
+    public List<AutorResponseDTO> listar() { return service.buscarTodos(); }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Autor inserir(@RequestBody Autor autor) { return service.salvar(autor); }
+    public AutorResponseDTO inserir(@Valid @RequestBody AutorRequestDTO autor) { return service.salvar(autor); }
 }

@@ -1,7 +1,9 @@
 package br.ufrn.eaj.sistema_editora.controller;
 
-import br.ufrn.eaj.sistema_editora.domain.Livro;
+import br.ufrn.eaj.sistema_editora.dto.LivroRequestDTO;
+import br.ufrn.eaj.sistema_editora.dto.LivroResponseDTO;
 import br.ufrn.eaj.sistema_editora.service.LivroService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,9 @@ public class LivroController {
     private LivroService service;
 
     @GetMapping
-    public List<Livro> listar() { return service.buscarTodos(); }
+    public List<LivroResponseDTO> listar() { return service.buscarTodos(); }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Livro inserir(@RequestBody Livro livro) { return service.salvar(livro); }
+    public LivroResponseDTO inserir(@Valid @RequestBody LivroRequestDTO livro) { return service.salvar(livro); }
 }

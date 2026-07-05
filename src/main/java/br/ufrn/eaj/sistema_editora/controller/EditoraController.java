@@ -1,7 +1,9 @@
 package br.ufrn.eaj.sistema_editora.controller;
 
-import br.ufrn.eaj.sistema_editora.domain.Editora;
+import br.ufrn.eaj.sistema_editora.dto.EditoraRequestDTO;
+import br.ufrn.eaj.sistema_editora.dto.EditoraResponseDTO;
 import br.ufrn.eaj.sistema_editora.service.EditoraService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,9 @@ public class EditoraController {
     private EditoraService service;
 
     @GetMapping
-    public List<Editora> listar() { return service.buscarTodos(); }
+    public List<EditoraResponseDTO> listar() { return service.buscarTodos(); }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Editora inserir(@RequestBody Editora editora) { return service.salvar(editora); }
+    public EditoraResponseDTO inserir(@Valid @RequestBody EditoraRequestDTO editora) { return service.salvar(editora); }
 }

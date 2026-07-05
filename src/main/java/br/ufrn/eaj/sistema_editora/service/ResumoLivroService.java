@@ -1,6 +1,8 @@
 package br.ufrn.eaj.sistema_editora.service;
 
 import br.ufrn.eaj.sistema_editora.domain.ResumoLivro;
+import br.ufrn.eaj.sistema_editora.dto.ResumoLivroRequestDTO;
+import br.ufrn.eaj.sistema_editora.dto.ResumoLivroResponseDTO;
 import br.ufrn.eaj.sistema_editora.repository.ResumoLivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,5 +14,10 @@ public class ResumoLivroService {
     private ResumoLivroRepository repository;
 
     @Transactional
-    public ResumoLivro salvar(ResumoLivro resumo) { return repository.save(resumo); }
+    public ResumoLivroResponseDTO salvar(ResumoLivroRequestDTO dto) {
+        ResumoLivro resumo = new ResumoLivro();
+        resumo.setTexto(dto.texto());
+
+        return ResumoLivroResponseDTO.fromEntity(repository.save(resumo));
+    }
 }
