@@ -20,6 +20,6 @@ public class Editora {
     private String nome;
     private String cnpj;
 
-    @OneToMany(mappedBy = "editora", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "editora")
     private List<Livro> livros = new ArrayList<>();
 }
