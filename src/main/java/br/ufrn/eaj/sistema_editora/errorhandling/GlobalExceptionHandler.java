@@ -66,6 +66,11 @@ public class GlobalExceptionHandler {
         return criarResposta(HttpStatus.BAD_REQUEST, "Regra de negocio violada", List.of(ex.getMessage()));
     }
 
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    public ResponseEntity<ApiErroResponse> tratarCredenciaisInvalidas(CredenciaisInvalidasException ex) {
+        return criarResposta(HttpStatus.UNAUTHORIZED, "Nao autorizado", List.of(ex.getMessage()));
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiErroResponse> tratarIntegridadeDados() {
         return criarResposta(
